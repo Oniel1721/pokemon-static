@@ -2,7 +2,7 @@
 
 import Head from "next/head"
 
-import { FC } from "../../types/"
+import { FC } from "../../interfaces"
 import { Navbar } from '../ui';
 
 interface Props {
