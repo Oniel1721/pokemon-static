@@ -7,11 +7,9 @@ import { useEffect, useState } from 'react';
 
 import confetti from 'canvas-confetti'
 
-import { pokeApi } from '../../api';
-
 import { Layout } from '../../components/layouts'
-import { Pokemon, PokemonFullResponse } from '../../interfaces';
-import { localFavorites } from '../../utils';
+import { Pokemon } from '../../interfaces';
+import { getPokemonInfo, localFavorites } from '../../utils';
 
 interface Props {
     pokemon: Pokemon;
@@ -132,25 +130,10 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
 
 export const getStaticProps: GetStaticProps = async ({params}) => {
     const { id } = params as {id: string};
-    try{
-        const { data } = await pokeApi.get<PokemonFullResponse>(`/pokemon/${id}`)
-        return {
-            props: {
-                pokemon: {
-                    id: data.id,
-                    name: data.name,
-                    sprites: data.sprites
-                }
-            }
-        }
-    }
-    catch(e){
-        return {
-            props: {
-                pokemon: {
-                    name: 'Error'
-                }
-            }
+    const pokemon = await getPokemonInfo(id)
+    return {
+        props: {
+            pokemon
         }
     }
 }
